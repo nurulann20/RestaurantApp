@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Restaurant APp</string>
+    <string name="title_activity_restaurant_details_screen">RestaurantDetailsScreen</string>
 </resources>

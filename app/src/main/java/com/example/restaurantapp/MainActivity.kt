@@ -18,6 +18,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import androidx.navigation.navDeepLink
 import com.example.restaurantapp.ui.theme.RestaurantAPpTheme
 
 class MainActivity : ComponentActivity() {
@@ -27,8 +33,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             RestaurantAPpTheme {
                 Surface(color = MaterialTheme.colorScheme.background) {
-                    RestaurantsScreen()
-
+                    //RestaurantsScreen()
+                    RestaurantsApp()
                 }
             }
         }
@@ -37,4 +43,32 @@ class MainActivity : ComponentActivity() {
 
 class Greeting(s: String) {
 
+}
+
+@Composable
+private fun RestaurantsApp() {
+    val navController = rememberNavController()
+    NavHost(
+        navController,
+        startDestination = "restaurants"
+    ) {
+        composable(route = "restaurants") {
+            RestaurantsScreen { id ->
+                navController.navigate("restaurants/$id")
+            }
+        }
+        composable(
+            route = "restaurants/{restaurant_id}",
+            arguments = listOf(
+                navArgument("restaurant_id") {
+                    type = NavType.IntType
+                }),
+            deepLinks = listOf(navDeepLink {
+                uriPattern = "www.restaurantsapp.details.com/{restaurant_id}"
+            })
+
+        ) {
+            RestaurantDetailsScreen()
+        }
+    }
 }
